@@ -2,76 +2,130 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 void main() {
 
+    // Scanner input = new Scanner(System.in);
+    //-------------------------------------------------------------------------------------
+    /*
+    1. Простая — «Чётные в диапазоне»
+    Считать с клавиатуры два числа a и b. Вывести все чётные числа от a до b включительно, через пробел.
+    System.out.println("a:");
+    int a = Integer.parseInt(input.nextLine());
+    System.out.println("b:");
+    int b = Integer.parseInt(input.nextLine());
+    for (int i = Math.min(a, b); i < Math.max(a,b); i++) {
+        if(i%2==0){
+            System.out.print(i + " ");
+        }
+        else {
+            continue;
+        }
+    }
+     */
+
+    //-------------------------------------------------------------------------------------
+    /*
+    2. Средняя — «Числа Фибоначчи с условием»
+    Ввести n. Вывести первые n чисел Фибоначчи, но если число делится на 3 — вместо него вывести слово "Fizz".
+    System.out.println("n:");
+    int n = Integer.parseInt(input.nextLine());
+    int n0 = 0;
+    int n1 = 1;
+    System.out.print(0 + " "+1 + " ");
+    int temp_nth_term = 0;
+    for (int i = 2; i <= n-2; i++) {
+        temp_nth_term = n0 + n1;
+        n0 = n1;
+        n1 = temp_nth_term;
+        if (temp_nth_term%3==0){
+            System.out.print(" Fizz ");
+        }
+        else {
+            System.out.print(temp_nth_term + " ");
+        }
+
+    }
+     */
 
 
+    //-------------------------------------------------------------------------------------
+    /*
+    3. Сложная — «Проверка на простоту с подсчётом»
+    Ввести n. Для всех чисел от 2 до n определить, простое ли число (без использования Math или готовых методов — только вложенный цикл + флаг).
+    Вывести количество простых чисел и сумму их цифр (для каждого простого числа отдельно).
+    System.out.println("n1:");
+    int n = Integer.parseInt(input.nextLine());
+    int count = 0;
+    boolean flag = true;
+    if (n>2){
+        for (int i = 2; i <= n ; i++) {
+            for (int j = 1; j <= i; j++) {
+                if ((j > 1 && j < i) && (i % j == 0)) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
 
-    Scanner scanner_hello = new Scanner(System.in);
-    System.out.println("Please enter name :");
-    String name = scanner_hello.nextLine();
-    System.out.println("Please enter age :");
-    int age = Integer.parseInt(scanner_hello.nextLine());
+                System.out.println("num : " + i);
+                count++;
+                int num = i;
+                if (num > 9) {
+                    int summ = 0;
+                    while (num > 0) {
+                        int digit = num % 10;
+                        summ += digit;
+                        num = num / 10;
+                    }
+                    System.out.println("summ : " + summ);
 
-    System.out.println("Hello " + name + " with age " + age);
+                }
+                System.out.println("---------------------------------");
+            }
+            else {
+                flag = true;
+            }
+        }
+        System.out.println("count nums : "+count);
+    }
+     */
 
 
-//----------------------------------------------------------------------------------------------------------------------
-/*
-Задача 2: Средняя (Чек в магазине)
-Напиши программу, которая работает как простая касса. Она должна запрашивать данные о покупке и выводить итоговую стоимость.
-Что нужно сделать:
- * Запроси название товара (String).
- * Запроси цену за одну штуку (int).
- * Запроси количество купленного товара (int).
- * Создай еще одну переменную int для хранения итоговой суммы (цена умножить на количество).
- * Выведи красивый чек.
- */
+    //-------------------------------------------------------------------------------------
+    /*
+    4. Очень сложная — «Треугольник Паскаля через циклы»
+    Вывести первые n строк треугольника Паскаля, используя только циклы и условия
+    (без рекурсии, без массивов — только промежуточные переменные и формулу биномиального коэффициента, вычисляемую вручную через цикл).
+    System.out.println("n:");
+    int n = Integer.parseInt(input.nextLine());
 
-    Scanner scanner_check = new Scanner(System.in);
-    System.out.println("Please enter product name :");
-    String product = scanner_check.nextLine();
-    System.out.println("Please enter price :");
-    int price = Integer.parseInt(scanner_check.nextLine());
-    System.out.println("Please enter count :");
-    int count = Integer.parseInt(scanner_check.nextLine());
-    int total_sum = price*count;
+    for (int i = 0; i < n; i++) {
+        int number = 1;
+        for (int j = 0; j <= i; j++) {
+            System.out.print(number + " ");
+            number = number * (i - j) / (j + 1);
+        }
+        System.out.println();
+    }
+     */
 
-    System.out.printf("|%-20s|%n", String.valueOf('-').repeat(20));
-    System.out.printf("|%-20s|%n", "Check");
-    System.out.printf("|%-20s|%n", "Product name :" + product);
-    System.out.printf("|%-20s|%n", "Count :" + count);
-    System.out.printf("|%-20s|%n", "Total sum :" + total_sum);
-    System.out.printf("|%-20s|%n", String.valueOf('-').repeat(20));
 
-//----------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------
+    /*
+    5. Супер сложная — «Автомат для проверки скобочной последовательности вручную»
+    Дана строка, состоящая только из символов (, ), [, ], {, } (ввод — обычная строка).
+    Определить, правильная ли последовательность скобок — без использования Stack/Deque/коллекций,
+    эмулируя стек вручную через массив char[] фиксированного размера и переменную-указатель, работая исключительно через циклы,
+    условия и индексацию массива.
 
-/*
-Задача 3: Сложная (Анкета с подвохом)
-Напиши программу для создания "Карточки персонажа" в игре. Эта задача кажется простой, но в ней скрыт классический подвох, на котором спотыкаются 90% новичков при работе со Scanner.
-Что нужно сделать:
- * Запроси уровень персонажа (int).
- * Запроси имя персонажа (String). Может состоять из нескольких слов (например, "Джон Сноу").
- * Запроси базовое здоровье (int).
- * Запроси класс персонажа (String, например, "Воин" или "Маг").
- * Выведи карточку персонажа на экран.
- */
+     */
 
-    Scanner scanner_person = new Scanner(System.in);
-    System.out.println("Please enter level :");
-    int level = Integer.parseInt(scanner_person.nextLine());
-    System.out.println("Please enter name :");
-    String name_person = scanner_person.nextLine();
-    System.out.println("Please enter HP :");
-    int hp = Integer.parseInt(scanner_person.nextLine());
-    System.out.println("Please enter class :");
-    String class_name = scanner_person.nextLine();
 
-    System.out.printf("|%-40s|%n", String.valueOf('-').repeat(40));
-    System.out.printf("|%-40s|%n", "Person :");
-    System.out.printf("|%-40s|%n", "Name :" + name_person);
-    System.out.printf("|%-40s|%n", "Level :" + level);
-    System.out.printf("|%-40s|%n", "HP :" + hp);
-    System.out.printf("|%-40s|%n", "Class :" + class_name);
-    System.out.printf("|%-40s|%n", String.valueOf('_').repeat(40));
+    //----------------------------------------------------------------------------------
+    /*
+    6. Анриал — «Клеточный автомат Раздел 30 (Wolfram) на строке фиксированной длины»
+    Реализовать одномерный клеточный автомат по правилу 30 Вольфрама: дана начальная строка из 0 и 1 длиной n,
+    нужно вывести m следующих поколений, где каждая новая клетка вычисляется по трём соседним (с учётом краевых условий — считать выход за границы как 0),
+    используя только циклы, условия, char[]/String, без методов-помощников, без рекурсии, без битовых операций.
+     */
 
 
 }
