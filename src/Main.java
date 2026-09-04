@@ -1,96 +1,87 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 void main(String[] args) {
+
     Scanner scanner = new Scanner(System.in);
-    /*
-     1.Метод принимает пот пользовтеля возраст, возвращает boolean — подходит человек под условие или нет.
-     */
-
-    System.out.println("age : ");
-    int age = scanner.nextInt();
-    System.out.println("Adult : " + isAdult(age));
-    //========================================================================
-    /*
-    2.Создать метод который проверяет, простое ли число, используя цикл внутри метода.
-     */
-    System.out.println("num : ");
-    int num = scanner.nextInt();
-    System.out.println("Simple : " + isSimple(num));
-    //========================================================================
-    /*
-    3.Метод считает количество гласных букв в строке, перебирая символы через charAt.
-     */
+/*
+Простая
+Считать с клавиатуры два числа (int) — делимое и делитель.
+Попытаться выполнить деление и вывести результат.
+Если делитель равен 0 — поймать ArithmeticException и вывести "На ноль делить нельзя" вместо падения программы.
+ */
+    System.out.println("делимое ");
+    int dividend = scanner.nextInt();
+    System.out.println("делитель ");
+    int divisor = scanner.nextInt();
+    double result = 0;
+    try {
+        result = (double) dividend / divisor;
+        if(result == Double.POSITIVE_INFINITY){
+            throw new ArithmeticException("нельзя");
+        }
+        System.out.println(result);
+    } catch (ArithmeticException e) {
+        System.out.println("На ноль делить нельзя :" + e.getMessage());
+    }
+    //==================================================================
+/*
+Средняя
+Считать с клавиатуры строку. Попытаться преобразовать её в число через Integer.parseInt.
+Если преобразование не удалось — поймать то NumberFormatException и вывести "Введено не число", а не дать программе упасть.
+Обернуть это в цикл: повторять запрос ввода, пока пользователь не введёт корректное число
+ */
     scanner.nextLine();
-    System.out.println("line : ");
-    String line = scanner.nextLine();
-    System.out.println("vowel letters : " + countVowelLetters(line));
-    //========================================================================
-    /*
-    4.Программа в цикле принимает оценки (2–5), пока не введут слово «стоп»; невалидные оценки отклоняет, но не прерывает работу; в конце считает средний балл и выдаёт вердикт
-     */
-
-    String grade = "";
-    String grades="";
-    String[]dates = new String[]{grade,grades};
+    String line;
+    int result1 = 0;
+    boolean correct = true;
     do {
-        System.out.println("grade : ");
-        dates[0] = scanner.nextLine();
-        addGradeToGrades(dates);
-    }while (!dates[0].equals("стоп"));
+        System.out.println("строка ");
+        line = scanner.nextLine();
 
-    double middle = middleGradeToGrades(dates);
-    System.out.println("middle grade : " + middle);
 
-}
-
-private static boolean isAdult(int age){
-    if(age >= 18){
-        return true;
-    }
-    return false;
-}
-private static boolean isSimple(int num){
-    if(num == 1){
-        return false;
-    }
-    for (int i = 2; i < num; i++) {
-        if(num%i==0){
-            return false;
+        try {
+            result1 = Integer.parseInt(line);
+            correct = true;
+            System.out.println("Введено число : " + result1);
+        } catch (NumberFormatException e) {
+            System.out.println("Введено не число : " + e.getMessage());
+            correct = false;
         }
-    }
+    } while (!correct);
+    //==================================================================
+/*
+Сложная
+Создать массив int размером 5. Считать с клавиатуры индекс массива (int) и делитель (int).
+Нужно: (1) обратиться к элементу массива по введённому индексу, (2) поделить его на введённый делитель.
+Обработать оба возможных исключения раздельно — ArrayIndexOutOfBoundsException (если индекс вне границ массива) и ArithmeticException (если делитель 0) — каждое своим отдельным catch с отдельным сообщением.
+Добавить блок finally, который выводит "Попытка обработки завершена" независимо от того, было исключение или нет.
+ */
 
-    return true;
-}
-private static int countVowelLetters(String line){
-    int count = 0;
-    for (int i = 0; i <line.length(); i++) {
-        char toLowerchar = Character.toLowerCase(line.charAt(i));
-        if(toLowerchar == 'a' || toLowerchar == 'e' || toLowerchar == 'i' || toLowerchar == 'o' || toLowerchar == 'u'){
-            count++;
+    int [] array = {12,345,9,23,1};
+    System.out.println("индекс ");
+    int index = scanner.nextInt();
+    System.out.println("делитель ");
+    int divisor1 = scanner.nextInt();
+    double result2 = 0;
+    try {
+      result2 =  (double) array[index] / divisor1;
+        if(result2 == Double.POSITIVE_INFINITY){
+            throw new ArithmeticException("нельзя");
         }
+        System.out.println("результат " + result2);
     }
-    return count;
-}
+    catch (ArrayIndexOutOfBoundsException e){
+        System.out.println("индекс вне границ массива : "+ e.getMessage());
+    }
+    catch (ArithmeticException e){
+        System.out.println("делитель 0 : "+ e.getMessage());
+    }
+    finally {
+        System.out.println("Попытка обработки завершена");
+    }
 
-private static void addGradeToGrades(String[]dates){
-    if(!dates[0].isEmpty() && dates[0].length()==1){
-            if(!Character.isDigit(dates[0].charAt(0))){
-                return;
-            }
-            else {
-                dates[1]+=dates[0];
-            }
-    }
-}
+    //==================================================================
 
-private static double middleGradeToGrades(String[]dates){
-    double result = 0.0;
-    double sum = 0;
-    for (int i = 0; i < dates[1].length(); i++) {
-        sum+=Integer.parseInt(String.valueOf(dates[1].charAt(i)));
-    }
-    result = sum / dates[1].length();
-    return result;
 }
 
 
