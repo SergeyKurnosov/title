@@ -1,86 +1,133 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+public static class Book{
+    String title;
+    int pages;
+
+
+    public Book(String title, int pages) {
+        this.title = title;
+        this.pages = pages;
+    }
+
+    @Override
+    public String toString() {
+        return "\nBook{" +
+                "title='" + title + '\'' +
+                ", pages=" + pages +
+                '}';
+    }
+}
+//=====================================================================================
+public static class Rectangle {
+    double with;
+    double height;
+
+    public Rectangle(double with, double height) {
+        this.with = with;
+        this.height = height;
+    }
+
+    public double getArea(){
+        return with*height;
+    }
+    public double getPerimeter(){
+        return (with+height)*2;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Rectangle{" +
+                "with=" + with +
+                ", height=" + height +
+                '}';
+    }
+}
+//=====================================================================================
+public static class BankAccount {
+    String owner;
+    double balance;
+
+    public BankAccount(String owner, double balance) {
+        this.owner = owner;
+        this.balance = balance;
+    }
+    public void deposit(double amount){
+        if(amount >0 ){
+            balance += amount;
+        }
+    }
+    public void  withdraw(double amount){
+        if(balance >= amount){
+            balance-=amount;
+        }
+        else {
+            System.out.println("Недостаточно средств");
+        }
+    }
+
+    public String printInfo() {
+        return "\nBankAccount{" +
+                "owner='" + owner + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
+}
+
+
+
 void main(String[] args) {
 
-    Scanner scanner = new Scanner(System.in);
+//=======================================================
 /*
 Простая
-Считать с клавиатуры два числа (int) — делимое и делитель.
-Попытаться выполнить деление и вывести результат.
-Если делитель равен 0 — поймать ArithmeticException и вывести "На ноль делить нельзя" вместо падения программы.
+Создать класс `Book` с полями `title` (String) и `pages` (int). Добавить конструктор, принимающий оба поля.
+В `main` создать два объекта `Book` с разными данными и вывести их поля через `System.out.println` (например, "Книга: <title>, страниц: <pages>").
  */
-    System.out.println("делимое ");
-    int dividend = scanner.nextInt();
-    System.out.println("делитель ");
-    int divisor = scanner.nextInt();
-    double result = 0;
-    try {
-        result = (double) dividend / divisor;
-        if(result == Double.POSITIVE_INFINITY){
-            throw new ArithmeticException("нельзя");
-        }
-        System.out.println(result);
-    } catch (ArithmeticException e) {
-        System.out.println("На ноль делить нельзя :" + e.getMessage());
-    }
-    //==================================================================
+
+    Book book1 = new Book("one", 11);
+    Book book2 = new Book("two", 22);
+    System.out.print(book1);
+    System.out.print(book2);
+    System.out.println();
+//=======================================================
 /*
 Средняя
-Считать с клавиатуры строку. Попытаться преобразовать её в число через Integer.parseInt.
-Если преобразование не удалось — поймать то NumberFormatException и вывести "Введено не число", а не дать программе упасть.
-Обернуть это в цикл: повторять запрос ввода, пока пользователь не введёт корректное число
- */
-    scanner.nextLine();
-    String line;
-    int result1 = 0;
-    boolean correct = true;
-    do {
-        System.out.println("строка ");
-        line = scanner.nextLine();
+Создать класс `Rectangle` с полями `width` и `height` (оба double). Добавить конструктор и метод `getArea()`, возвращающий площадь (`width * height`),
+а также метод `getPerimeter()`, возвращающий периметр. В `main` создать два объекта с разными размерами, вывести для каждого площадь и периметр, и сравнить через `if`,
+у какого из двух прямоугольников площадь больше.
+*/
+    Rectangle rect1 = new Rectangle(11.1, 22.2);
+    System.out.println(rect1.getArea() + " / " + rect1.getPerimeter());
+    Rectangle rect2 = new Rectangle(33.3, 44.4);
+    System.out.println(rect2.getArea() + " / " + rect2.getPerimeter());
+    if(Double.compare(rect1.getArea(), rect2.getArea()) == 0) {
+        System.out.println("площади равны");
+    }
+    else if(Double.compare(rect1.getArea(), rect2.getArea()) == 1) {
+        System.out.println("площадь rect1 больше");
+    }
+    else if(Double.compare(rect1.getArea(), rect2.getArea()) == -1) {
+        System.out.println("площадь rect2 больше");
+    }
 
-
-        try {
-            result1 = Integer.parseInt(line);
-            correct = true;
-            System.out.println("Введено число : " + result1);
-        } catch (NumberFormatException e) {
-            System.out.println("Введено не число : " + e.getMessage());
-            correct = false;
-        }
-    } while (!correct);
-    //==================================================================
+//=======================================================
 /*
 Сложная
-Создать массив int размером 5. Считать с клавиатуры индекс массива (int) и делитель (int).
-Нужно: (1) обратиться к элементу массива по введённому индексу, (2) поделить его на введённый делитель.
-Обработать оба возможных исключения раздельно — ArrayIndexOutOfBoundsException (если индекс вне границ массива) и ArithmeticException (если делитель 0) — каждое своим отдельным catch с отдельным сообщением.
-Добавить блок finally, который выводит "Попытка обработки завершена" независимо от того, было исключение или нет.
- */
+Создать класс `BankAccount` с полями `owner` (String) и `balance` (double). Добавить конструктор, метод `deposit(double amount)` (увеличивает баланс)
+и метод `withdraw(double amount)` (уменьшает баланс, но только если средств достаточно — иначе вывести "Недостаточно средств" и не менять баланс).
+Добавить метод `printInfo()`, который выводит владельца и текущий баланс. В `main` создать объект, выполнить несколько операций подряд (пополнение,
+снятие корректной суммы, попытку снять больше, чем есть на счёте) и после каждой операции вызывать `printInfo()`, чтобы показать, как меняется состояние объекта.
+*/
 
-    int [] array = {12,345,9,23,1};
-    System.out.println("индекс ");
-    int index = scanner.nextInt();
-    System.out.println("делитель ");
-    int divisor1 = scanner.nextInt();
-    double result2 = 0;
-    try {
-      result2 =  (double) array[index] / divisor1;
-        if(result2 == Double.POSITIVE_INFINITY){
-            throw new ArithmeticException("нельзя");
-        }
-        System.out.println("результат " + result2);
-    }
-    catch (ArrayIndexOutOfBoundsException e){
-        System.out.println("индекс вне границ массива : "+ e.getMessage());
-    }
-    catch (ArithmeticException e){
-        System.out.println("делитель 0 : "+ e.getMessage());
-    }
-    finally {
-        System.out.println("Попытка обработки завершена");
-    }
-
-    //==================================================================
+    BankAccount bankAccount = new BankAccount("Sergey",0.0);
+    System.out.println(bankAccount.printInfo());
+    bankAccount.deposit(123);
+    System.out.println(bankAccount.printInfo());
+    bankAccount.withdraw(100.22);
+    System.out.println(bankAccount.printInfo());
+    bankAccount.withdraw(300);
+    System.out.println(bankAccount.printInfo());
 
 }
 
