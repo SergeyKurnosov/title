@@ -1,133 +1,121 @@
+public class Person {
+    private String name;
+    private int age;
 
-public static class Book{
-    String title;
-    int pages;
-
-
-    public Book(String title, int pages) {
-        this.title = title;
-        this.pages = pages;
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "\nBook{" +
-                "title='" + title + '\'' +
-                ", pages=" + pages +
-                '}';
-    }
-}
-//=====================================================================================
-public static class Rectangle {
-    double with;
-    double height;
-
-    public Rectangle(double with, double height) {
-        this.with = with;
-        this.height = height;
+    public Person() {
     }
 
-    public double getArea(){
-        return with*height;
-    }
-    public double getPerimeter(){
-        return (with+height)*2;
+    public String getName() {
+        return name;
     }
 
-
-    @Override
-    public String toString() {
-        return "Rectangle{" +
-                "with=" + with +
-                ", height=" + height +
-                '}';
-    }
-}
-//=====================================================================================
-public static class BankAccount {
-    String owner;
-    double balance;
-
-    public BankAccount(String owner, double balance) {
-        this.owner = owner;
-        this.balance = balance;
-    }
-    public void deposit(double amount){
-        if(amount >0 ){
-            balance += amount;
-        }
-    }
-    public void  withdraw(double amount){
-        if(balance >= amount){
-            balance-=amount;
-        }
-        else {
-            System.out.println("Недостаточно средств");
-        }
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String printInfo() {
-        return "\nBankAccount{" +
-                "owner='" + owner + '\'' +
-                ", balance=" + balance +
-                '}';
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
 
+//================================================================
+public class Product {
+    private String name;
+    private double price;
 
+    public Product() {
+    }
+
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public void setPrice(double price) {
+        if (price < 0) {
+            System.out.println("Цена не может быть отрицательной");
+        } else {
+            this.price = price;
+        }
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+//================================================================
+
+//================================================================
+//================================================================
 
 void main(String[] args) {
-
-//=======================================================
-/*
+    //================================================================
+    /*
 Простая
-Создать класс `Book` с полями `title` (String) и `pages` (int). Добавить конструктор, принимающий оба поля.
-В `main` создать два объекта `Book` с разными данными и вывести их поля через `System.out.println` (например, "Книга: <title>, страниц: <pages>").
- */
-
-    Book book1 = new Book("one", 11);
-    Book book2 = new Book("two", 22);
-    System.out.print(book1);
-    System.out.print(book2);
+Создать класс Person с приватными полями name (String) и age (int).
+Добавить конструктор и публичные геттеры/сеттеры для обоих полей — без какой-либо валидации.
+В main создать объект, изменить оба поля через сеттеры, вывести значения через геттеры.
+     */
+    Person person = new Person();
+    person.setName("Sergey");
+    person.setAge(25);
+    System.out.println("Name: " + person.getName() + " ; Age: " + person.getAge());
     System.out.println();
-//=======================================================
-/*
+    //================================================================
+    /*
 Средняя
-Создать класс `Rectangle` с полями `width` и `height` (оба double). Добавить конструктор и метод `getArea()`, возвращающий площадь (`width * height`),
-а также метод `getPerimeter()`, возвращающий периметр. В `main` создать два объекта с разными размерами, вывести для каждого площадь и периметр, и сравнить через `if`,
-у какого из двух прямоугольников площадь больше.
-*/
-    Rectangle rect1 = new Rectangle(11.1, 22.2);
-    System.out.println(rect1.getArea() + " / " + rect1.getPerimeter());
-    Rectangle rect2 = new Rectangle(33.3, 44.4);
-    System.out.println(rect2.getArea() + " / " + rect2.getPerimeter());
-    if(Double.compare(rect1.getArea(), rect2.getArea()) == 0) {
-        System.out.println("площади равны");
-    }
-    else if(Double.compare(rect1.getArea(), rect2.getArea()) == 1) {
-        System.out.println("площадь rect1 больше");
-    }
-    else if(Double.compare(rect1.getArea(), rect2.getArea()) == -1) {
-        System.out.println("площадь rect2 больше");
-    }
-
-//=======================================================
-/*
+Создать класс Product с приватными полями name (String) и price (double). Сеттер setPrice должен проверять: если переданное значение отрицательное — не менять цену
+и вывести "Цена не может быть отрицательной", иначе установить новое значение. В main продемонстрировать оба случая: успешную установку цены и попытку установить отрицательную.
+     */
+    Product product = new Product();
+    product.setName("product");
+    product.setPrice(200);
+    System.out.println(product.getPrice());
+    product.setPrice(-200);
+    System.out.println(product.getPrice());
+    System.out.println();
+    //================================================================
+    /*
 Сложная
-Создать класс `BankAccount` с полями `owner` (String) и `balance` (double). Добавить конструктор, метод `deposit(double amount)` (увеличивает баланс)
-и метод `withdraw(double amount)` (уменьшает баланс, но только если средств достаточно — иначе вывести "Недостаточно средств" и не менять баланс).
-Добавить метод `printInfo()`, который выводит владельца и текущий баланс. В `main` создать объект, выполнить несколько операций подряд (пополнение,
-снятие корректной суммы, попытку снять больше, чем есть на счёте) и после каждой операции вызывать `printInfo()`, чтобы показать, как меняется состояние объекта.
-*/
+Создать класс BankAccount с приватными полями owner (String) и balance (double) — оба поля должны быть недоступны напрямую снаружи класса (никаких публичных полей и никакого сеттера setBalance — баланс меняется только через методы deposit/withdraw). Добавить:
+геттеры getOwner() и getBalance() (только чтение баланса, без прямой записи);
+метод deposit(double amount) — отклоняет пополнение, если amount <= 0 (вывести "Некорректная сумма пополнения");
+метод withdraw(double amount) — отклоняет снятие, если amount <= 0 или если средств недостаточно (отдельные сообщения для каждого случая).
+В main показать, что снаружи класса невозможно написать account.balance = 1000000; напрямую — баланс можно изменить только через deposit/withdraw, и оба метода отказывают на некорректных данных, оставляя баланс в согласованном состоянии.
+     */
 
-    BankAccount bankAccount = new BankAccount("Sergey",0.0);
-    System.out.println(bankAccount.printInfo());
-    bankAccount.deposit(123);
-    System.out.println(bankAccount.printInfo());
-    bankAccount.withdraw(100.22);
-    System.out.println(bankAccount.printInfo());
-    bankAccount.withdraw(300);
-    System.out.println(bankAccount.printInfo());
+    BankAccount account = new BankAccount("Sergey");
+   // account.balance = 1000000; // java: balance has private access in BankAccount!!!!
+
+    System.out.println(account.toString());
+    account.withdraw(100);
+    System.out.println(account.toString());
+    account.deposit(0);
+    System.out.println(account.toString());
+    account.deposit(300);
+    System.out.println(account.toString());
+    account.withdraw(100);
+    System.out.println(account.toString());
+
+
 
 }
 
