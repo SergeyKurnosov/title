@@ -1,128 +1,123 @@
-import task1.Dog;
-import task2.Car;
-import task3.*;
-import task4.*;
+import task_1.*;
+import task_1.Student;
+import task_2.*;
+import task_3.*;
+import task_4.*;
+
 
 void main(String[] args) {
-
-    //==============================================================
-    /*
-1. Создать класс Animal с приватным полем name (String), конструктором и геттером getName(), а также методом makeSound(),
-который выводит "Животное издаёт звук". Создать класс Dog extends Animal, который переопределяет makeSound(), выводя "Гав!".
-В main создать объект Dog, вызвать getName() (унаследованный метод) и makeSound() (переопределённый).
-     */
-    Dog dog = new Dog("Sharik");
-    dog.makeSound();
-    System.out.println(dog);
-    System.out.println();
-    //==============================================================
-    /*
-2. Создать класс Vehicle с приватным полем speed (int), геттером и сеттером setSpeed (сеттер должен отклонять отрицательные значения — "Скорость не может быть отрицательной").
-Создать класс Car extends Vehicle, добавляющий своё приватное поле brand (String) с отдельным геттером/сеттером. В main создать Car,
-установить скорость и марку через сеттеры (показать, что speed меняется только через унаследованный setSpeed, а не напрямую).
-     */
-    Car car = new Car();
-    car.setBrand("Volvo");
-    car.setSpeed(100);
-    System.out.println(car);
-    System.out.println();
-    //==============================================================
-    /*
-3. Создать класс Employee с приватными полями name (String) и baseSalary (double), геттерами и методом calculatePay(), возвращающим baseSalary без изменений.
-Создать подклассы Manager extends Employee (переопределяет calculatePay() — добавляет 20% бонуса) и Developer extends Employee (переопределяет calculatePay()
-— добавляет фиксированную надбавку 15000). В main: считать с клавиатуры N — количество сотрудников; в цикле для каждого — считать имя, базовую зарплату
-и символ типа ('M' или 'D', через switch создать нужный подкласс) в массив Employee[] размера N. Пройти по массиву в цикле, для каждого вызвать calculatePay()
-(полиморфизм — вызывается метод конкретного подкласса, хотя тип массива — базовый Employee) и накопить общую сумму выплат. Вывести итоговую ведомость и общую сумму.
-     */
     Scanner scanner = new Scanner(System.in);
-    System.out.println("Количество сотрудников  : ");
-    int n = scanner.nextInt();
-    scanner.nextLine();
-    Employee[] employees = new Employee[n];
-    for (int i = 0; i < n; i++) {
-        System.out.println("Имя : ");
+    /*
+1.Создать класс Person с приватными полями name (String) и age (int), геттерами и методом displayInfo(), выводящим имя и возраст.
+Создать Student extends Person, добавляющий приватное поле grade (double) со своим геттером/сеттером (с валидацией: grade должна быть от 0 до 10,
+иначе не устанавливать и вывести ошибку), и переопределяющий displayInfo() — вывод дополняется оценкой. В main создать массив Person[]
+из 4 элементов, часть — обычные Person, часть — Student, заполнить с клавиатуры (включая символ-переключатель типа через switch), пройти в цикле и вызвать displayInfo()
+для каждого (полиморфизм — вызовется нужная версия метода).
+     */
+    Person[] persons = new Person[4];
+    for (int i = 0; i < 4; i++) {
+        Person person;
+        System.out.println("name");
         String name = scanner.nextLine();
-        System.out.println("Зарплата : ");
-        double baseSalary = scanner.nextDouble();
+        System.out.println("age");
+        int age = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("Символ : ");
-        String symbol = scanner.nextLine();
-        Employee employee;
-        switch (symbol) {
-            case "M":
-                employee = new Manager(name, baseSalary);
+        System.out.println("is Student? (Y-yes ; N-no)");
+        String isStudent = scanner.nextLine();
+        switch (isStudent) {
+            case "Y":
+                System.out.println("grade");
+                double grade = scanner.nextDouble();
+                scanner.nextLine();
+                person = new Student(grade, name, age);
                 break;
-            case "D":
-                employee = new Devolper(name,baseSalary);
+            case "N":
+                person = new Person(name, age);
                 break;
             default:
-                employee = null;
+                person = null;
+                break;
         }
-        if (employee != null) {
-            employees[i] = employee;
+        if (person != null) {
+            persons[i] = person;
         }
-
     }
 
-    double sum = 0;
-    for (Employee employee : employees){
-        sum += employee.calculatePay();
-        System.out.println(employee.getName() + " / " + employee.calculatePay());
+    for (int i = 0; i < 4; i++) {
+        persons[i].displayInfo();
     }
-    System.out.println("TOTAL SUM :::::::::::::: " + sum);
-    //==============================================================
+
+//===============================================================================================
     /*
-4. Создать класс Shape с приватным полем type (char, например 'C' для круга, 'R' для прямоугольника), геттером и методом area(),
-возвращающим 0 (заглушка). Создать Circle extends Shape с приватным полем radius (double), переопределяющий area() (Math.PI * radius * radius),
-и Rectangle extends Shape с полями width, height (double), переопределяющий area() (width * height). В main: считать с клавиатуры N фигур;
-в цикле для каждой — считать символ типа через switch, в зависимости от типа считать нужные размеры (радиус либо ширину/высоту) и создать соответствующий объект в массив Shape[].
-Пройти по массиву в цикле, вызвать area() для каждой (полиморфизм), вывести площадь каждой фигуры и её тип, а также найти и вывести фигуру с максимальной площадью.
+2.Создать класс BankAccount с приватными полями owner (String) и balance (double), методами deposit/withdraw (с валидацией, как раньше)
+и методом calculateYearlyReport(), возвращающим balance без изменений. Создать SavingsAccount extends BankAccount с приватным полем interestRate (double),
+переопределяющий calculateYearlyReport() — добавляет проценты к балансу. Создать CheckingAccount extends BankAccount с приватным полем overdraftFee (double),
+переопределяющий calculateYearlyReport() — вычитает фиксированную комиссию. В main: массив BankAccount[] из нескольких счетов разных типов,
+в цикле вызвать calculateYearlyReport() для каждого и вывести итоговый прогноз баланса.
      */
-    System.out.println("Количество фигур  : ");
-    int n2 = scanner.nextInt();
-    scanner.nextLine();
-    Shape[]shapes = new Shape[n2];
-    for (int i = 0; i < n2; i++) {
-        System.out.println("Символ : ");
-        String symbol = scanner.nextLine();
+    BankAccount[] bankAccounts = {new CheckingAccount("One", 123, 120), new SavingsAccount("Twoo", 100, 45), new CheckingAccount("Three", 999, 12)};
+    for (int i = 0; i < 3; i++) {
+        System.out.println(bankAccounts[i].calculateYearlyReport());
+    }
+//===============================================================================================
+    /*
+3.Создать класс Shape с приватным полем name (String), геттером и методом area() (заглушка, возвращает 0), и методом describe(),
+который выводит name и вызывает area() (то есть describe() не переопределяется в подклассах — важно показать, что даже невиртуальный метод базового класса,
+вызывающий area() внутри себя, всё равно получит нужную переопределённую версию area() благодаря полиморфизму).
+Создать Circle и Rectangle как подклассы, переопределяющие только area(). В main: массив Shape[], заполнить с клавиатуры, вызвать describe() для каждого элемента, увидеть,
+что при одном и том же коде вызова результат разный в зависимости от реального типа объекта.
+     */
+    Shape[] shapes = new Shape[4];
+
+    for (int i = 0; i < 4; i++) {
         Shape shape;
-        switch (symbol){
+        System.out.println("name");
+        String name = scanner.nextLine();
+        System.out.println("type (C-Circle ; R-Rectangle)");
+        String type = scanner.nextLine();
+        switch (type) {
             case "C":
-                System.out.println("Радиус : ");
-                double radius = scanner.nextDouble();
-                scanner.nextLine();
-                shape = new Circle(symbol.charAt(0),radius);
+                shape = new Circle(name);
                 break;
             case "R":
-                System.out.println("Высота : ");
-                double height = scanner.nextDouble();
-                scanner.nextLine();
-                System.out.println("Ширина : ");
-                double width = scanner.nextDouble();
-                scanner.nextLine();
-                shape = new Rectangle(symbol.charAt(0), width,height);
+                shape = new Rectangle(name);
                 break;
             default:
                 shape = null;
-                break;
         }
-        if(shape!= null){
+        if (shape != null) {
             shapes[i] = shape;
         }
     }
 
-
-double maxArea = 0;
-  int index= 0;
-    for (int i = 0; i < shapes.length; i++) {
-        if(shapes[i].area() > maxArea){
-            maxArea = shapes[i].area();
-            index = i;
-        }
+    for (int i = 0; i < 4; i++) {
+        shapes[i].describe();
     }
 
-    System.out.println(shapes[index].getType() + "/" + shapes[index].area());
+//===============================================================================================
+    /*
+*
+Создать класс Student с приватными полями name (String) и averageGrade (double). Создать массив из 5 объектов Student, заполнить с клавиатуры.
+* Задача: вывести список студентов, отсортированный по averageGrade по возрастанию, используя Arrays.sort() — без ручной сортировки пузырьком и
+* без вынесения оценок в отдельный массив. Для этого класс Student должен реализовать интерфейс Comparable<Student> и переопределить метод compareTo(Student other).
+     */
 
+    Student[] students = new Student[4];
+    for (int i = 0; i < 4; i++) {
+        System.out.println("name");
+        String name = scanner.nextLine();
+        System.out.println("averageGrade");
+        double averageGrade = scanner.nextDouble();
+        scanner.nextLine();
+        students[i] = new Student(name, averageGrade);
+    }
+
+    System.out.println(Arrays.toString(students));
+    Arrays.sort(students);
+    System.out.println(Arrays.toString(students));
+
+
+    scanner.close();
 }
 
 
