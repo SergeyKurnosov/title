@@ -1,116 +1,57 @@
-
+import task_1.Point;
+import task_2.Person;
+import task_3.Point_three;
 
 void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
 /*
-1.Создать ArrayList<String> — список покупок. В цикле считывать с клавиатуры названия товаров, пока не будет введено слово "стоп"
-(сигнальное значение). После этого вывести весь список. Затем считать с клавиатуры название товара для удаления, удалить его из списка
-через remove() (если такого товара нет — вывести "Товар не найден"), вывести итоговый список и его размер.
-*/
-    List<String> list = new ArrayList<>();
-    String word;
-    do {
-        System.out.println("товар:");
-        word = scanner.nextLine();
-        list.add(word);
-    }while (!word.equals("стоп"));
-    list.remove(list.size()-1);
-    System.out.println(list);
+1.Создать класс Point с приватными полями x и y (int). Переопределить equals() (сравнение по значениям полей, с проверкой на null и на
+тип через instanceof) и hashCode() (на основе x и y, например через Objects.hash(x, y)). В main: создать два разных объекта Point с
+одинаковыми координатами и сравнить их через == и через .equals() — показать разницу в результате. Затем положить оба объекта в HashSet<Point>
+и проверить, что множество считает их дубликатом (размер набора — 1), только если equals/hashCode реализованы корректно.
+ */
+    Point point1 = new Point(11,22), point2 = new Point(11,22);
+    System.out.println(point1==point2);
+    System.out.println(point1.equals(point2));
 
-    System.out.println("товар для удаления:");
-    word = scanner.nextLine();
-    if(list.contains(word)){
-        list.remove(word);
-    }
-    else{
-        System.out.println("Товар не найден");
-    }
-    System.out.println(list);
-    System.out.println(list.size());
+    Set<Point> pointSet = new HashSet<>();
+    pointSet.add(point1);
+    pointSet.add(point2);
+    System.out.println(pointSet.size());//один
+    System.out.println("//////////////////////////////////////////");
 
 //===============================================================================================
 /*
-2.Считать с клавиатуры N слов в цикле, добавляя каждое в ArrayList<String>. Создать HashSet<String> из этого списка (new HashSet<>(list))
-и вывести его размер в сравнении с размером исходного списка — так наглядно видно, сколько было повторов. Вывести сами уникальные слова из Set.
+2.Создать класс Person с полями name (String) и age (int), переопределить equals()/hashCode() так, чтобы два человека считались равными
+только при совпадении обоих полей. Задача-ловушка: специально переопределить только equals(), не переопределяя hashCode(), и положить два
+"равных" объекта в HashMap<Person, String> как ключи — увидеть, что несмотря на equals() == true, HashMap их не считает одним и тем же ключом
+(потому что хэш-коды разные). Задача — исправить, добавив корректный hashCode()
  */
-    List<String> list2 = new ArrayList<>();
-    String word2;
-    do {
-        System.out.println("слово:");
-        word2 = scanner.nextLine();
-        list2.add(word2);
-    } while (!word2.equals("стоп"));
-    list2.remove(list2.size() - 1);
-    System.out.println(list2);
-    System.out.println(list2.size());
-
-    Set<String> set = new HashSet<>(list2);
-    System.out.println(set);
-    System.out.println(set.size());
-
+    Person person1 = new Person("One",11), person2 = new Person("One",11);
+    Map<Person,String> personMap = new HashMap<>();
+    personMap.put(person1,"One");
+    personMap.put(person2,"Two");
+    System.out.println(personMap.toString());// добавляет второй(перезаписывает)
+    System.out.println("//////////////////////////////////////////");
 //===============================================================================================
 /*
-3.Считать с клавиатуры предложение, разбить на слова через split(" "). Создать HashMap<String, Integer> и посчитать, сколько раз встречается
-каждое слово (проверять containsKey, если есть — увеличивать счётчик через put(word, map.get(word) + 1), если нет — put(word, 1)).
-Вывести итоговую таблицу "слово — количество" (перебор через for (String key : map.keySet()) или entrySet()).
+3.Переписать класс Point из первой задачи как record Point(int x, int y) {}. В main показать, что equals(), hashCode() и toString() уже
+работают правильно "из коробки", без единой написанной строчки — повторить те же проверки (сравнение двух record с одинаковыми полями,
+добавление в HashSet) и убедиться, что результат идентичен ручной реализации из первой задачи, но кода не пришлось писать вообще. И попытаться
+написать point.x = 5; — увидеть, что не скомпилируется, и объяснить, почему (все поля record неявно final).
  */
-    System.out.println("Предложение:");
-    String str = scanner.nextLine();
-    str  = str.toLowerCase();
-    String[] words = str.split(" ");
-    Map<String, Integer> map = new HashMap<>();
-    for(String word3:words){
-        if(map.containsKey(word3)){
-            map.put(word3, map.get(word3)+1);
-        }
-        else {
-            map.put(word3,1);
-        }
-    }
 
-    System.out.println("Слово:   |Количество:");
-    for (Map.Entry<String, Integer> entry : map.entrySet()) {
-        System.out.println(entry.getKey()+"   "+entry.getValue());
-
-    }
 //===============================================================================================
-/*
-Создать ArrayList<Integer> из чисел от 1 до 10. Задача в два этапа:
-Написать код, который в цикле for-each пытается удалить из списка все чётные числа через list.remove(number) прямо во время перебора — и
-убедиться, что программа падает с ConcurrentModificationException (важно, чтобы студент реально это увидел и понял, почему нельзя изменять
-коллекцию во время итерации по ней обычным for-each).
-Исправить это, используя Iterator<Integer> напрямую (iterator(), hasNext(), next()) и его собственный метод remove(),
-который единственный умеет безопасно удалять элемент во время итерации.
- */
+    Point_three point_three1 = new Point_three(11,22), point_three2 = new Point_three(11,22);
+    System.out.println(point_three1==point_three2);
+    System.out.println(point_three1.equals(point_three2));
 
-    List<Integer> ints = new ArrayList<>();
-    for (int i = 1; i <= 10; i++) {
-        ints.add(i);
-    }
-    System.out.println(ints);
-    for (Integer int_ : ints){
-        if(int_%2==0){
-            ints.remove(int_);
-        }
-    }
-    /*
-    ОШИБКА!!!!!!!!
-    Exception in thread "main" java.util.ConcurrentModificationException
-	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:1104)
-	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:1058)
-	at Main.main(Main.java:89)
-     */
-    Iterator<Integer>iterator = ints.iterator();
-    while (iterator.hasNext()){
-        Integer int_ = iterator.next();
-        if(int_%2==0){
-            iterator.remove();
-        }
-    }
-    System.out.println(ints);
+    Set<Point_three> point_threeSet = new HashSet<>();
+    point_threeSet.add(point_three1);
+    point_threeSet.add(point_three2);
+    System.out.println(point_threeSet.size());//один
 
+    point_three1.x = 5;// java: x has private access in task_3.Point_three
 
-    scanner.close();
 }
 
 
