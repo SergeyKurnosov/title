@@ -1,57 +1,49 @@
-import task_1.Point;
-import task_2.Person;
-import task_3.Point_three;
+import task_3.Student;
 
 void main(String[] args) {
 /*
-1.Создать класс Point с приватными полями x и y (int). Переопределить equals() (сравнение по значениям полей, с проверкой на null и на
-тип через instanceof) и hashCode() (на основе x и y, например через Objects.hash(x, y)). В main: создать два разных объекта Point с
-одинаковыми координатами и сравнить их через == и через .equals() — показать разницу в результате. Затем положить оба объекта в HashSet<Point>
-и проверить, что множество считает их дубликатом (размер набора — 1), только если equals/hashCode реализованы корректно.
- */
-    Point point1 = new Point(11,22), point2 = new Point(11,22);
-    System.out.println(point1==point2);
-    System.out.println(point1.equals(point2));
-
-    Set<Point> pointSet = new HashSet<>();
-    pointSet.add(point1);
-    pointSet.add(point2);
-    System.out.println(pointSet.size());//один
-    System.out.println("//////////////////////////////////////////");
+1.Дан список целых чисел (List<Integer>, задать вручную, минимум 10 значений). С помощью Stream API вывести на экран только чётные числа,
+каждое на новой строке (filter + forEach).
+*/
+    List<Integer> list = List.of(1,2,3,4,5,6,7,8,9,10);
+    list.stream()
+            .filter(i->i%2==0)
+            .forEach(System.out::println);
 
 //===============================================================================================
 /*
-2.Создать класс Person с полями name (String) и age (int), переопределить equals()/hashCode() так, чтобы два человека считались равными
-только при совпадении обоих полей. Задача-ловушка: специально переопределить только equals(), не переопределяя hashCode(), и положить два
-"равных" объекта в HashMap<Person, String> как ключи — увидеть, что несмотря на equals() == true, HashMap их не считает одним и тем же ключом
-(потому что хэш-коды разные). Задача — исправить, добавив корректный hashCode()
+2.Дан список строк — имена студентов (List<String>, с разным регистром букв, например "иван", "Мария", "ПЁТР"). С помощью Stream API
+привести все имена к виду с заглавной первой буквой и остальными строчными, отсортировать по алфавиту и вывести результат (map + sorted + forEach).
+Метод приведения к нужному регистру можно оформить как обычный статический метод и передать в map через ссылку на метод.
  */
-    Person person1 = new Person("One",11), person2 = new Person("One",11);
-    Map<Person,String> personMap = new HashMap<>();
-    personMap.put(person1,"One");
-    personMap.put(person2,"Two");
-    System.out.println(personMap.toString());// добавляет второй(перезаписывает)
-    System.out.println("//////////////////////////////////////////");
+    List<String> names = List.of("иван", "Мария", "ПЁТР","Сергей","НИКИТА","вероника");
+    names.stream()
+            .map(n->n= nameCorrect(n))
+            .sorted()
+            .forEach(System.out::println);
+
+
+
 //===============================================================================================
 /*
-3.Переписать класс Point из первой задачи как record Point(int x, int y) {}. В main показать, что equals(), hashCode() и toString() уже
-работают правильно "из коробки", без единой написанной строчки — повторить те же проверки (сравнение двух record с одинаковыми полями,
-добавление в HashSet) и убедиться, что результат идентичен ручной реализации из первой задачи, но кода не пришлось писать вообще. И попытаться
-написать point.x = 5; — увидеть, что не скомпилируется, и объяснить, почему (все поля record неявно final).
+3.Дан список объектов Student с полями name (String) и grade (int, средний балл). С помощью Stream API отобрать студентов с баллом выше
+заданного порога (например, 4), собрать их в новый список (collect(Collectors.toList())) и вывести количество отобранных студентов через
+.size() этого списка, а затем — их имена.
  */
+ List<Student> students = List.of(new Student("One",2),new Student("Two",4),new Student("Three",6),new Student("Four",8));
+ List<Student> result = students.stream()
+         .filter(s->s.getGrade()>4)
+         .collect(Collectors.toList());
+
+    System.out.println(result.size());
+    result.stream()
+            .forEach(s-> System.out.println(s.getName()));
 
 //===============================================================================================
-    Point_three point_three1 = new Point_three(11,22), point_three2 = new Point_three(11,22);
-    System.out.println(point_three1==point_three2);
-    System.out.println(point_three1.equals(point_three2));
+}
 
-    Set<Point_three> point_threeSet = new HashSet<>();
-    point_threeSet.add(point_three1);
-    point_threeSet.add(point_three2);
-    System.out.println(point_threeSet.size());//один
-
-    point_three1.x = 5;// java: x has private access in task_3.Point_three
-
+String nameCorrect(String n){
+    return n.substring(0,1).toUpperCase()+n.substring(1).toLowerCase();
 }
 
 
